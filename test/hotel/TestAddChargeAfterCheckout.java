@@ -8,10 +8,8 @@ import java.util.Date;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import hotel.checkout.CheckoutCTL;
-import hotel.checkout.CheckoutUI;
 import hotel.credit.CreditCard;
 import hotel.credit.CreditCardType;
 import hotel.entities.Booking;
@@ -23,22 +21,11 @@ import hotel.entities.ServiceType;
 import hotel.service.RecordServiceCTL;
 import hotel.service.RecordServiceCTL.State;
 
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
-import static org.mockito.Mockito.when;
+class TestAddChargeAfterCheckout {
 
-import org.mockito.ArgumentCaptor;
-import org.mockito.InOrder;
-import static org.mockito.Mockito.*;
-
-//@ExtendWith(MockitoExtension.class)
-class TestAddChargeThenCheckout {
-	
 	Hotel hotel = new Hotel();
 	RecordServiceCTL recordServiceControl;
+	RecordServiceCTL recordServiceControl2;
 	CheckoutCTL checkoutControl;
 	Booking booking;
 	
@@ -52,6 +39,7 @@ class TestAddChargeThenCheckout {
 	
 	ServiceType serviceType;
 	int cost;
+	int cost2;
 	
 	int roomId;
 	
@@ -64,6 +52,7 @@ class TestAddChargeThenCheckout {
 		//MockitoAnnotations.initMocks(this);
 		
 		recordServiceControl = new RecordServiceCTL(hotel);
+		recordServiceControl2 = new RecordServiceCTL(hotel);
 		checkoutControl = new CheckoutCTL(hotel);
 		
 		
@@ -78,6 +67,7 @@ class TestAddChargeThenCheckout {
 		
 		serviceType = ServiceType.BAR_FRIDGE;
 		cost = 100;
+		cost2 = 300;
 		
 		roomId = room.getId();
 	}
@@ -101,27 +91,25 @@ class TestAddChargeThenCheckout {
 		//checkoutControl.checkoutUI = mockCheckoutUI;
 		checkoutControl.roomId = roomId;
 		
+		recordServiceControl2.state = State.SERVICE;
+		recordServiceControl2.booking = booking;
+		recordServiceControl2.roomNumber = roomId;
+		
 		//ArgumentCaptor<String> checkoutCaptor = ArgumentCaptor.forClass(String.class);
 		
 		
 		//act
 		recordServiceControl.serviceDetailsEntered(serviceType, cost);
 		checkoutControl.roomIdEntered(roomId);
+		checkoutControl.chargesAccepted(true);
+		checkoutControl.creditDetailsEntered(CreditCardType.MASTERCARD, 1, 1);
+		//assertTrue(hotel.activeBookingsByRoomId.size() == 0);
 		
+		recordServiceControl2.serviceDetailsEntered(serviceType, cost2);
 		
 		//assert
-		/**
-		verify(mockCheckoutUI).displayMessage(checkoutCaptor.capture());
-		assertTrue(checkoutCaptor.getValue().equals("Charges for room: 101, booking: 11102011101\r\n" + 
-				"Arrival date: 11-11-2011, Staylength: 1\r\n" + 
-				"Guest: Abe, Address: 123 Fake st, Phone: 12345678\r\n" + 
-				"Charges:\r\n" + 
-				"    Bar Fridge  :     $0.00\r\n" + 
-				"Total: $0.00\r\n" + 
-				"\r\n" + 
-				"Accept charges(Y/N) : "));
 		
-		*/
+		
 	}
-	 
+
 }

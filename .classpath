@@ -3,7 +3,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="lib" path="lib/apiguardian-api-1.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/byte-buddy-1.8.15.jar"/>
 	<classpathentry kind="lib" path="lib/byte-buddy-agent-1.8.15.jar"/>
@@ -19,5 +18,6 @@
 	<classpathentry kind="lib" path="lib/mockito-junit-jupiter-2.21.0.jar"/>
 	<classpathentry kind="lib" path="lib/objenesis-2.6.jar"/>
 	<classpathentry kind="lib" path="lib/opentest4j-1.1.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
