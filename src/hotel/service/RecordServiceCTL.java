@@ -8,14 +8,14 @@ import hotel.utils.IOUtils;
 
 public class RecordServiceCTL {
 	
-	private static enum State {ROOM, SERVICE, CHARGE, CANCELLED, COMPLETED};
+	public static enum State {ROOM, SERVICE, CHARGE, CANCELLED, COMPLETED};
 	
 	private Hotel hotel;
 	private RecordServiceUI recordServiceUI;
-	private State state;
+	public State state;
 	
-	private Booking booking;
-	private int roomNumber;
+	public Booking booking;
+	public int roomNumber;
 
 
 	public RecordServiceCTL(Hotel hotel) {
