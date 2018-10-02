@@ -14,13 +14,13 @@ import hotel.utils.IOUtils;
 
 public class CheckoutCTL {
 
-	private enum State {ROOM, ACCEPT, CREDIT, CANCELLED, COMPLETED };
+	public enum State {ROOM, ACCEPT, CREDIT, CANCELLED, COMPLETED };
 	
 	private Hotel hotel;
-	private State state;
-	private CheckoutUI checkoutUI;
+	public State state;
+	public CheckoutUI checkoutUI;
 	private double total;
-	private int roomId;
+	public int roomId;
 
 
 	public CheckoutCTL(Hotel hotel) {
