@@ -8,8 +8,14 @@ import java.util.Date;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import hotel.checkout.CheckoutCTL;
+import hotel.checkout.CheckoutUI;
 import hotel.credit.CreditCard;
 import hotel.credit.CreditCardType;
 import hotel.entities.Booking;
@@ -21,6 +27,7 @@ import hotel.entities.ServiceType;
 import hotel.service.RecordServiceCTL;
 import hotel.service.RecordServiceCTL.State;
 
+@ExtendWith(MockitoExtension.class)
 class TestAddChargeAfterCheckout {
 
 	Hotel hotel = new Hotel();
@@ -95,6 +102,10 @@ class TestAddChargeAfterCheckout {
 		recordServiceControl2.booking = booking;
 		recordServiceControl2.roomNumber = roomId;
 		
+		booking.state = Booking.State.CHECKED_IN;
+		
+		room.state = Room.State.OCCUPIED;
+		
 		//ArgumentCaptor<String> checkoutCaptor = ArgumentCaptor.forClass(String.class);
 		
 		
@@ -103,12 +114,13 @@ class TestAddChargeAfterCheckout {
 		checkoutControl.roomIdEntered(roomId);
 		checkoutControl.chargesAccepted(true);
 		checkoutControl.creditDetailsEntered(CreditCardType.MASTERCARD, 1, 1);
-		//assertTrue(hotel.activeBookingsByRoomId.size() == 0);
+		assertTrue(hotel.activeBookingsByRoomId.size() == 0);
 		
-		recordServiceControl2.serviceDetailsEntered(serviceType, cost2);
+		Executable e = () -> recordServiceControl2.serviceDetailsEntered(serviceType, cost2);
+		Throwable t = assertThrows(RuntimeException.class, e);
 		
 		//assert
-		
+		assertEquals("Cannot find booking in active bookings", t.getMessage());
 		
 	}
 

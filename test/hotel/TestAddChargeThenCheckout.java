@@ -101,6 +101,8 @@ class TestAddChargeThenCheckout {
 		checkoutControl.checkoutUI = mockCheckoutUI;
 		checkoutControl.roomId = roomId;
 		
+		booking.state = Booking.State.CHECKED_IN;
+		
 		ArgumentCaptor<String> checkoutCaptor = ArgumentCaptor.forClass(String.class);
 		
 		
