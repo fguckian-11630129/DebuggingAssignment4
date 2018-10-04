@@ -1,0 +1,6 @@
+H1: When the total charges from the the charges array are calculated the total will be 0
+Test: Set breakpoint to line 70 (the line after total is calculated)
+Prediction: The total variable will be 0.0
+Resutl: H1 True, total = 0.0
+
+H2: The elements in the charges array from booking will have the value 0.0
