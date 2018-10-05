@@ -106,6 +106,7 @@ class TestAddChargeAfterCheckout {
 		
 		room.state = Room.State.OCCUPIED;
 		
+		assertTrue(hotel.activeBookingsByRoomId.size() == 1);
 		//ArgumentCaptor<String> checkoutCaptor = ArgumentCaptor.forClass(String.class);
 		
 		
@@ -114,13 +115,12 @@ class TestAddChargeAfterCheckout {
 		checkoutControl.roomIdEntered(roomId);
 		checkoutControl.chargesAccepted(true);
 		checkoutControl.creditDetailsEntered(CreditCardType.MASTERCARD, 1, 1);
-		assertTrue(hotel.activeBookingsByRoomId.size() == 0);
-		
-		Executable e = () -> recordServiceControl2.serviceDetailsEntered(serviceType, cost2);
-		Throwable t = assertThrows(RuntimeException.class, e);
 		
 		//assert
-		assertEquals("Cannot find booking in active bookings", t.getMessage());
+		Executable e = () -> recordServiceControl2.serviceDetailsEntered(serviceType, cost2);
+		Throwable t = assertThrows(RuntimeException.class, e);
+				
+		assertEquals("Hotel: addServiceCharge: no booking present for room id : 101", t.getMessage());
 		
 	}
 

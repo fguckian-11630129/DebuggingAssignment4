@@ -145,6 +145,7 @@ public class Booking {
 
 	public void checkOut() {
 		room.checkout(this);
+		this.state = Booking.State.CHECKED_OUT;
 	}
 
 }
