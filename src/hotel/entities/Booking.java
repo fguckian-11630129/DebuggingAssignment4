@@ -11,7 +11,7 @@ import hotel.utils.IOUtils;
 
 public class Booking {
 	
-	private enum State {PENDING, CHECKED_IN, CHECKED_OUT};
+	public enum State {PENDING, CHECKED_IN, CHECKED_OUT};
 	
 	private Guest guest;
 	private Room room;
@@ -24,7 +24,7 @@ public class Booking {
 	
 	private List<ServiceCharge> charges;
 	
-	private State state;
+	public State state;
 
 
 	
@@ -138,13 +138,14 @@ public class Booking {
 	}
 
 
-	public void addServiceCharge(ServiceType serviceType, double cosst) {
+	public void addServiceCharge(ServiceType serviceType, double cost) {
 		charges.add(new ServiceCharge(serviceType, cost));
 	}
 
 
 	public void checkOut() {
 		room.checkout(this);
+		this.state = Booking.State.CHECKED_OUT;
 	}
 
 }

@@ -9,12 +9,12 @@ import hotel.utils.IOUtils;
 
 public class Room {
 	
-	private enum State {READY, OCCUPIED}
+	public enum State {READY, OCCUPIED}
 	
 	int id;
 	RoomType roomType;
 	List<Booking> bookings;
-	State state;
+	public State state;
 
 	
 	public Room(int id, RoomType roomType) {

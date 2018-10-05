@@ -34,12 +34,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import static org.mockito.Mockito.*;
 
-//@ExtendWith(MockitoExtension.class)
+@ExtendWith(MockitoExtension.class)
 class TestAddChargeThenCheckout {
 	
 	Hotel hotel = new Hotel();
 	RecordServiceCTL recordServiceControl;
-	CheckoutCTL checkoutControl;
+	//CheckoutCTL checkoutControl;
 	Booking booking;
 	
 	
@@ -55,9 +55,9 @@ class TestAddChargeThenCheckout {
 	
 	int roomId;
 	
-	//@Mock CheckoutUI mockCheckoutUI;
+	@Mock CheckoutUI mockCheckoutUI;
 	
-	//@InjectMocks CheckoutCTL checkoutControl = new CheckoutCTL(hotel);
+	@InjectMocks CheckoutCTL checkoutControl = new CheckoutCTL(hotel);
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -69,7 +69,7 @@ class TestAddChargeThenCheckout {
 		
 		guest = new Guest("Abe", "123 Fake st", 12345678);
 		room = new Room(101, RoomType.SINGLE);
-		SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		arrivalDate = format.parse("11-11-2011");
 		stayLength = 3;
 		numberOfOccupants = 1;
@@ -98,10 +98,12 @@ class TestAddChargeThenCheckout {
 		recordServiceControl.roomNumber = roomId;
 		
 		checkoutControl.state = CheckoutCTL.State.ROOM;
-		//checkoutControl.checkoutUI = mockCheckoutUI;
+		checkoutControl.checkoutUI = mockCheckoutUI;
 		checkoutControl.roomId = roomId;
 		
-		//ArgumentCaptor<String> checkoutCaptor = ArgumentCaptor.forClass(String.class);
+		booking.state = Booking.State.CHECKED_IN;
+		
+		ArgumentCaptor<String> checkoutCaptor = ArgumentCaptor.forClass(String.class);
 		
 		
 		//act
@@ -110,18 +112,12 @@ class TestAddChargeThenCheckout {
 		
 		
 		//assert
-		/**
-		verify(mockCheckoutUI).displayMessage(checkoutCaptor.capture());
-		assertTrue(checkoutCaptor.getValue().equals("Charges for room: 101, booking: 11102011101\r\n" + 
-				"Arrival date: 11-11-2011, Staylength: 1\r\n" + 
-				"Guest: Abe, Address: 123 Fake st, Phone: 12345678\r\n" + 
-				"Charges:\r\n" + 
-				"    Bar Fridge  :     $0.00\r\n" + 
-				"Total: $0.00\r\n" + 
-				"\r\n" + 
-				"Accept charges(Y/N) : "));
 		
-		*/
+		verify(mockCheckoutUI).displayMessage(checkoutCaptor.capture());
+		String message = checkoutCaptor.getValue();
+		String[] splited = message.split("\\s+");
+		assertEquals("$100.00", splited[splited.length-1]); 
+		
 	}
 	 
 }
