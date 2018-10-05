@@ -1,6 +1,64 @@
+CHECK YOUR ASSUMPTIONS
+
+I will start at the end, where the actual variable that the UI uses to display the service charges at checkout is calculated
+
 H1: When the total charges from the the charges array are calculated the total will be 0
-Test: Set breakpoint to line 70 (the line after total is calculated)
+Test: Set breakpoint to line 70 of CheckoutCTL(the line after total is calculated)
 Prediction: The total variable will be 0.0
 Resutl: H1 True, total = 0.0
 
+Now I will make sure that the charges array that feeds this total does not contain the 100.00 my test placed
+as a service charge.
+
 H2: The elements in the charges array from booking will have the value 0.0
+Test: Set a breakpoint at line 68 of CheckoutCTL and check the values of the charges list
+Prediction: The value of the first index in the array will be 0.0
+Result: H2 True, There is one element in the list. It has a serviceType of "Bar Fridge"
+	and a cost of 0.00
+
+Ok so now i think I will find the point where the charges are suppose to be added to the booking. Over in the RecordServiceCTL class
+there is a point where hotel.addServiceCharge(roomNumber, serviceType, cost) is called. After this method call I want to see if
+the charges array contains the 100.00 I tried to add.
+
+H3: The charges array will have an element with a cost of 0.00 just after the hotel.addServiceCharge method is called
+Test: Set breakpoint to line 59 of the RecordServiceCTL class and check the charges list
+Prediction: The cost will be 0.00 of the element in the list
+Result: H3 true, The same element from H" with a cost of 0.00
+
+Now I want to have a look at the addServiceCharge method in the Hotel class. I quickly check that the charges array
+does contains no elements at the point the booking is called from the Hotels active bookings array
+
+H4: The booking will not have any charges listed at before my test adds the service charge
+Test: Set a breakpoint at line 114 and check the charges variable
+Prediction: charges will not contain any elements
+Result: Hypothesis confirmed, no charges yet.
+
+Ok at this breakpoint I can also check the value of the variable 'cost' which is fed into the booking.addServiceCharge method. Lets make sure its sane
+
+H5: The variable 'cost' that is passed as a parameter to the Hotel's addServiceCharge method is 100.00
+Test: Set a breakpoint at line 114 and check the cost variable
+Prediction: cost will be 100
+Result: H5 confirmed, cost = 100
+
+Now just after the booking.addServiceCharge method is called this array should contain one element - a 
+"Bar Fridge" service type with a cost of 100.00
+
+H6: After the booking.addServiceCharge method is called, the charges array will contain a ServiceCharge with
+a ServiceType "Bar Fridge" and a cost of 100.00
+Test: Set a breakpoint on line 119 of the Hotel class and check the charges variable
+Prediction: The charge will be 100.00
+Result: H6 fail, the charge is 0.00
+
+Ok so now we know that the Hotel class is passing a sane value of 100 to the booking class but the booking
+class is ending up with an inasane value in its charges array. I will go into booking and have a look 
+at the addServiceCharge method. 
+Ahh now I see a potential problem. The parameter 'cost' is misspelt 'cosst'. This means that the variable 'cost' that the charges.add(new ServiceCharge(serviceType, cost)); method sees is the class member defined at the top of the class with a default value of 0. This would explain why the cost value of the Service charge
+is 0. I will fix the name of the parameter and see what happens
+
+H7: Changing the name of the parameter cosst to cost in the addServiceCharge method of the booking class will allow my test to pass
+Test: Change the parameter name and run the test
+Prediction: Changing the parameter name will allow the test to pass
+Result: 
+
+
+

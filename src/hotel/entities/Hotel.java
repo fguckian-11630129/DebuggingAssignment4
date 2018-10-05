@@ -116,6 +116,7 @@ public class Hotel {
 			throw new RuntimeException(mesg);
 		}
 		booking.addServiceCharge(serviceType, cost);
+		
 	}
 
 	
